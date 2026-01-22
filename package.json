@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "API for Calliope - social platform for music",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ckyever/calliope-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ckyever/calliope-api/issues"
+  },
+  "homepage": "https://github.com/ckyever/calliope-api#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
+  }
+}
