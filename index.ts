@@ -4,6 +4,8 @@ import type { Request, Response } from "express";
 import passport from "passport";
 import session from "express-session";
 
+import * as authenticationController from "./controllers/authenticationController";
+
 const app = express();
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -20,6 +22,8 @@ app.use(
 );
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
+
+authenticationController.initialisePassportStrategy();
 
 app.get("/", (request: Request, response: Response) =>
   response.send("Welcome to the Calliope API!"),

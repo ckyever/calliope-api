@@ -25,6 +25,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "passport": "^0.7.0",
+    "passport-spotify": "^2.0.0",
     "pg": "^8.17.2"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@types/express-session": "^1.18.2",
     "@types/node": "^25.0.10",
     "@types/passport": "^1.0.17",
+    "@types/passport-spotify": "^2.0.4",
     "@types/pg": "^8.16.0",
     "prisma": "^7.3.0"
   }
