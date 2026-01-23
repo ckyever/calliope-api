@@ -15,5 +15,5 @@ datasource db {
 
 model users {
   id Int @id @default(autoincrement())
-  username String @unique
+  spotifyId String @unique
 }
