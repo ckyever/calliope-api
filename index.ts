@@ -31,7 +31,7 @@ app.get("/", (request: Request, response: Response) =>
   response.send("Welcome to the Calliope API!"),
 );
 
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
