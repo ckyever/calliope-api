@@ -19,4 +19,13 @@ const getUserBySpotifyId = async (spotifyId: string) => {
   return user;
 };
 
-export { getUserByUserId, getUserBySpotifyId };
+const createUser = async (spotifyId: string) => {
+  const user = await prisma.users.create({
+    data: {
+      spotifyId: spotifyId,
+    },
+  });
+  return user;
+};
+
+export { getUserByUserId, getUserBySpotifyId, createUser };

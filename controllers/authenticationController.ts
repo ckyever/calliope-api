@@ -22,10 +22,10 @@ const initialisePassportStrategy = () => {
       },
       async (accessToken, refreshToken, expires_in, profile, done) => {
         try {
-          const user = await usersModel.getUserBySpotifyId(profile.id);
+          let user = await usersModel.getUserBySpotifyId(profile.id);
 
           if (!user) {
-            return done(Error("Account does not exist"));
+            user = await usersModel.createUser(profile.id);
           }
 
           return done(null, user);
