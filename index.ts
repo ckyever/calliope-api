@@ -1,8 +1,10 @@
 import "dotenv/config";
 import express from "express";
 import type { Request, Response } from "express";
-import passport from "passport";
 import session from "express-session";
+import passport from "passport";
+import { prisma } from "./lib/prisma";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
 import authRouter from "./routes/authRouter";
 
@@ -17,9 +19,14 @@ if (!SESSION_SECRET) {
 
 app.use(
   session({
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000, // 2 minutes
+      dbRecordIdIsSessionId: true,
+    }),
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
   }),
 );
 app.use(passport.session());
