@@ -17,3 +17,10 @@ model users {
   id Int @id @default(autoincrement())
   spotifyId String @unique
 }
+
+model session {
+  id        String @id
+  sid       String @unique
+  data      String
+  expiresAt DateTime
+}
