@@ -4,6 +4,8 @@ import type { Request, Response } from "express";
 import passport from "passport";
 import session from "express-session";
 
+import authRouter from "./routes/authRouter";
+
 import * as authenticationController from "./controllers/authenticationController";
 
 const app = express();
@@ -28,6 +30,8 @@ authenticationController.initialisePassportStrategy();
 app.get("/", (request: Request, response: Response) =>
   response.send("Welcome to the Calliope API!"),
 );
+
+app.use("/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (error) => {
