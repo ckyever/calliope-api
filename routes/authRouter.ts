@@ -1,5 +1,4 @@
 import { Router } from "express";
-import type { Request, Response } from "express";
 import passport from "passport";
 
 import * as authController from "../controllers/authController";
