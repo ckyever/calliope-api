@@ -1,8 +1,15 @@
 import "dotenv/config";
+import type { Request, Response } from "express";
 import passport from "passport";
 import { Strategy as SpotifyStrategy } from "passport-spotify";
 
 import * as usersModel from "../models/usersModel";
+
+const REDIRECT_URL = process.env.FRONTEND_REDIRECT_URL;
+
+if (!REDIRECT_URL) {
+  throw Error("Missing environment variable - frontend redirect URL");
+}
 
 const initialisePassportStrategy = () => {
   const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -50,4 +57,9 @@ const initialisePassportStrategy = () => {
   });
 };
 
-export { initialisePassportStrategy };
+const handleSuccessfulAuth = async (req: Request, res: Response) => {
+  console.log(res.locals.currentUser);
+  res.redirect(REDIRECT_URL);
+};
+
+export { initialisePassportStrategy, handleSuccessfulAuth };
