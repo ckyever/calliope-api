@@ -1,21 +1,17 @@
 import { Router } from "express";
 import passport from "passport";
 
+import environmentVariables from "../environmentVariables";
+
 import * as authController from "../controllers/authController";
 
 const authRouter = Router();
-
-const REDIRECT_URL = process.env.FRONTEND_REDIRECT_URL;
-
-if (!REDIRECT_URL) {
-  throw Error("Missing environment variable - frontend redirect URL");
-}
 
 authRouter.get("/spotify", passport.authenticate("spotify"));
 authRouter.get(
   "/spotify/callback",
   passport.authenticate("spotify", {
-    failureRedirect: `${REDIRECT_URL}/?error=failed`,
+    failureRedirect: `${environmentVariables.FRONTEND_REDIRECT_URL}/?error=failed`,
   }),
   authController.handleSuccessfulAuth,
 );

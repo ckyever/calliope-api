@@ -6,16 +6,13 @@ import passport from "passport";
 import { prisma } from "./lib/prisma";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
+import environmentVariables from "./environmentVariables";
+
 import authRouter from "./routes/authRouter";
 
 import * as authenticationController from "./controllers/authController";
 
 const app = express();
-
-const SESSION_SECRET = process.env.SESSION_SECRET;
-if (!SESSION_SECRET) {
-  throw Error("Missing session secret environment variable");
-}
 
 app.use(
   session({
@@ -23,7 +20,7 @@ app.use(
       checkPeriod: 2 * 60 * 1000, // 2 minutes
       dbRecordIdIsSessionId: true,
     }),
-    secret: SESSION_SECRET,
+    secret: environmentVariables.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
@@ -45,8 +42,7 @@ app.get("/", (request: Request, response: Response) =>
 
 app.use("/api/auth", authRouter);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, (error) => {
+app.listen(environmentVariables.PORT, (error) => {
   if (error) {
     throw error;
   }
