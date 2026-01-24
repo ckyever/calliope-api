@@ -8,7 +8,7 @@ import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
 import authRouter from "./routes/authRouter";
 
-import * as authenticationController from "./controllers/authenticationController";
+import * as authenticationController from "./controllers/authController";
 
 const app = express();
 
