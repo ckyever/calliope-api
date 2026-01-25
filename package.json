@@ -25,6 +25,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "http2": "^3.3.6",
+    "jsonwebtoken": "^9.0.3",
     "passport": "^0.7.0",
     "passport-spotify": "^2.0.0",
     "pg": "^8.17.2"
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.18.2",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.10",
     "@types/passport": "^1.0.17",
     "@types/passport-spotify": "^2.0.4",

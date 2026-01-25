@@ -14,6 +14,7 @@ const variables = {
   SPOTIFY_SECRET: getEnvironmentVariable("SPOTIFY_SECRET"),
   SPOTIFY_CALLBACK_URL: getEnvironmentVariable("SPOTIFY_CALLBACK_URL"),
   FRONTEND_REDIRECT_URL: getEnvironmentVariable("FRONTEND_REDIRECT_URL"),
+  JWT_SECRET: getEnvironmentVariable("JWT_SECRET"),
 };
 
 export default variables;

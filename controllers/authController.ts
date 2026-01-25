@@ -1,5 +1,7 @@
 import "dotenv/config";
 import type { Request, Response } from "express";
+import { constants as httpConstants } from "http2";
+import jwt from "jsonwebtoken";
 import passport from "passport";
 import { Strategy as SpotifyStrategy } from "passport-spotify";
 
@@ -46,8 +48,23 @@ const initialisePassportStrategy = () => {
 };
 
 const handleSuccessfulAuth = async (req: Request, res: Response) => {
-  console.log(res.locals.currentUser);
-  res.redirect(environmentVariables.FRONTEND_REDIRECT_URL);
+  const user = res.locals.currentUser;
+  jwt.sign(
+    { user },
+    environmentVariables.JWT_SECRET,
+    { expiresIn: "1 days" },
+    async (error, token) => {
+      if (error) {
+        console.error(error);
+        return res.redirect(
+          `${environmentVariables.FRONTEND_REDIRECT_URL}/?error=failed`,
+        );
+      }
+      return res.redirect(
+        `${environmentVariables.FRONTEND_REDIRECT_URL}/?token=${token}`,
+      );
+    },
+  );
 };
 
 export { initialisePassportStrategy, handleSuccessfulAuth };
