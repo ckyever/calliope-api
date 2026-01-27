@@ -19,13 +19,26 @@ const getUserBySpotifyId = async (spotifyId: string) => {
   return user;
 };
 
-const createUser = async (spotifyId: string) => {
+const createUser = async (spotifyId: string, displayName: string) => {
   const user = await prisma.users.create({
     data: {
       spotifyId: spotifyId,
+      displayName: displayName,
     },
   });
   return user;
 };
 
-export { getUserByUserId, getUserBySpotifyId, createUser };
+const updateUser = async (spotifyId: string, displayName: string) => {
+  const user = await prisma.users.update({
+    where: {
+      spotifyId: spotifyId,
+    },
+    data: {
+      displayName: displayName,
+    },
+  });
+  return user;
+};
+
+export { getUserByUserId, getUserBySpotifyId, createUser, updateUser };

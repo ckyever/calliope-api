@@ -21,8 +21,10 @@ const initialisePassportStrategy = () => {
         try {
           let user = await usersModel.getUserBySpotifyId(profile.id);
 
-          if (!user) {
-            user = await usersModel.createUser(profile.id);
+          if (user) {
+            user = await usersModel.updateUser(profile.id, profile.displayName);
+          } else {
+            user = await usersModel.createUser(profile.id, profile.displayName);
           }
 
           return done(null, user);
