@@ -16,6 +16,7 @@ datasource db {
 model users {
   id Int @id @default(autoincrement())
   spotifyId String @unique
+  display_name String?
 }
 
 model session {
