@@ -1,6 +1,5 @@
 import "dotenv/config";
 import type { Request, Response } from "express";
-import { constants as httpConstants } from "http2";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import { Strategy as SpotifyStrategy } from "passport-spotify";
