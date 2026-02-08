@@ -5,6 +5,7 @@ import passport from "passport";
 import { Strategy as SpotifyStrategy } from "passport-spotify";
 
 import environmentVariables from "../environmentVariables";
+import type { UserPayload } from "../types/jwt";
 
 import * as usersModel from "../models/usersModel";
 
@@ -49,9 +50,13 @@ const initialisePassportStrategy = () => {
 };
 
 const handleSuccessfulAuth = async (req: Request, res: Response) => {
-  const user = res.locals.currentUser;
+  const user = await res.locals.currentUser;
   jwt.sign(
-    { user },
+    {
+      id: user.id,
+      spotifyId: user.spotifyId,
+      displayName: user.displayName,
+    } as UserPayload,
     environmentVariables.JWT_SECRET,
     { expiresIn: "1 days" },
     async (error, token) => {

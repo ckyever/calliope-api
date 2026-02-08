@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import environmentVariables from "../environmentVariables";
 
 import * as usersModel from "../models/usersModel";
+import type { UserPayload } from "../types/jwt";
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const bearerHeader = req.headers["authorization"];
@@ -21,11 +22,11 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
               .status(constants.HTTP_STATUS_FORBIDDEN)
               .json({ message: "Unauthorised access" });
           } else {
-            // CKYTODO The serialized user is just the id for some reason it is outputing 1 currently
-            // const user = await usersModel.getUserByUserId(Number(decoded));
-            // if (user) {
-            // req.user = user;
-            // }
+            const { id } = decoded as UserPayload;
+            const user = await usersModel.getUserByUserId(Number(id));
+            if (user) {
+              req.user = user;
+            }
             next();
           }
         },
