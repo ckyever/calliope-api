@@ -1,3 +1,4 @@
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import type { Request, Response } from "express";
@@ -15,6 +16,12 @@ import userRouter from "./routes/userRouter";
 import * as authenticationController from "./controllers/authController";
 
 const app = express();
+
+const corsOption = {
+  origin: environmentVariables.FRONTEND_REDIRECT_URL,
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOption));
 
 app.use(
   session({
