@@ -13,13 +13,13 @@ datasource db {
   provider = "postgresql"
 }
 
-model users {
+model User {
   id Int @id @default(autoincrement())
   spotifyId String @unique
   displayName String?
 }
 
-model session {
+model Session {
   id        String @id
   sid       String @unique
   data      String

@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma";
 
 const getUserByUserId = async (id: number) => {
-  const user = await prisma.users.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       id: id,
     },
@@ -11,7 +11,7 @@ const getUserByUserId = async (id: number) => {
 };
 
 const getUserBySpotifyId = async (spotifyId: string) => {
-  const user = await prisma.users.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       spotifyId: spotifyId,
     },
@@ -20,7 +20,7 @@ const getUserBySpotifyId = async (spotifyId: string) => {
 };
 
 const createUser = async (spotifyId: string, displayName: string) => {
-  const user = await prisma.users.create({
+  const user = await prisma.user.create({
     data: {
       spotifyId: spotifyId,
       displayName: displayName,
@@ -30,7 +30,7 @@ const createUser = async (spotifyId: string, displayName: string) => {
 };
 
 const updateUser = async (spotifyId: string, displayName: string) => {
-  const user = await prisma.users.update({
+  const user = await prisma.user.update({
     where: {
       spotifyId: spotifyId,
     },
