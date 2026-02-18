@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 import environmentVariables from "../environmentVariables";
 
-import * as usersModel from "../models/usersModel";
+import * as userModel from "../models/userModel";
 import type { UserPayload } from "../types/jwt";
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
@@ -23,7 +23,7 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
               .json({ message: "Unauthorised access" });
           } else {
             const { id } = decoded as UserPayload;
-            const user = await usersModel.getUserByUserId(Number(id));
+            const user = await userModel.getUserByUserId(Number(id));
             if (user) {
               req.user = user;
             }

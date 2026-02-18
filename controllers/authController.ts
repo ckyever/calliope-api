@@ -7,7 +7,7 @@ import { Strategy as SpotifyStrategy } from "passport-spotify";
 import environmentVariables from "../environmentVariables";
 import type { UserPayload } from "../types/jwt";
 
-import * as usersModel from "../models/usersModel";
+import * as userModel from "../models/userModel";
 
 const initialisePassportStrategy = () => {
   passport.use(
@@ -19,12 +19,12 @@ const initialisePassportStrategy = () => {
       },
       async (accessToken, refreshToken, expires_in, profile, done) => {
         try {
-          let user = await usersModel.getUserBySpotifyId(profile.id);
+          let user = await userModel.getUserBySpotifyId(profile.id);
 
           if (user) {
-            user = await usersModel.updateUser(profile.id, profile.displayName);
+            user = await userModel.updateUser(profile.id, profile.displayName);
           } else {
-            user = await usersModel.createUser(profile.id, profile.displayName);
+            user = await userModel.createUser(profile.id, profile.displayName);
           }
 
           return done(null, user);
@@ -41,7 +41,7 @@ const initialisePassportStrategy = () => {
 
   passport.deserializeUser(async (id: number, done) => {
     try {
-      const user = usersModel.getUserByUserId(id);
+      const user = userModel.getUserByUserId(id);
       done(null, user);
     } catch (err) {
       done(err);
