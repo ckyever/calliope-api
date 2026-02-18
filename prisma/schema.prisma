@@ -13,15 +13,25 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  spotifyId String @unique
-  displayName String?
-}
-
 model Session {
   id        String @id
   sid       String @unique
   data      String
   expiresAt DateTime
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  spotifyId String @unique
+  displayName String?
+  posts Post[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  spotifyUri String
+  authorId Int
+  author User @relation(fields: [authorId], references: [id])
+  rating Int?
+  text String?
 }
