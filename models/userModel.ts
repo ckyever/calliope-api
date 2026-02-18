@@ -41,4 +41,15 @@ const updateUser = async (spotifyId: string, displayName: string) => {
   return user;
 };
 
-export { getUserByUserId, getUserBySpotifyId, createUser, updateUser };
+const getAllUsers = async () => {
+  const users = await prisma.user.findMany();
+  return users;
+};
+
+export {
+  getUserByUserId,
+  getUserBySpotifyId,
+  createUser,
+  updateUser,
+  getAllUsers,
+};
