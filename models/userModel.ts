@@ -19,6 +19,15 @@ const getUserBySpotifyId = async (spotifyId: string) => {
   return user;
 };
 
+const getUserByUsername = async (username: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+  });
+  return user;
+};
+
 interface UserInfo {
   spotifyId: string | null;
   username: string | null;
@@ -67,6 +76,7 @@ const getAllUsers = async () => {
 export {
   getUserByUserId,
   getUserBySpotifyId,
+  getUserByUsername,
   createUser,
   updateUser,
   getAllUsers,

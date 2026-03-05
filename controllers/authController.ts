@@ -1,5 +1,8 @@
+import { hash } from "bcryptjs";
 import "dotenv/config";
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
+import * as validator from "express-validator";
+import { constants as httpConstants } from "http2";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 import { Strategy as SpotifyStrategy } from "passport-spotify";
@@ -8,6 +11,11 @@ import environmentVariables from "../environmentVariables";
 import type { UserPayload } from "../types/jwt";
 
 import * as userModel from "../models/userModel";
+
+interface UserParams {
+  username: string;
+  password: string;
+}
 
 const initialisePassportStrategy = () => {
   passport.use(
@@ -78,4 +86,69 @@ const handleSuccessfulAuth = async (req: Request, res: Response) => {
   );
 };
 
-export { initialisePassportStrategy, handleSuccessfulAuth };
+const validateCreateUser = [
+  validator
+    .body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("Username is required"),
+  validator.body("password").notEmpty().withMessage("Password is required"),
+];
+
+const createUser = [
+  validateCreateUser,
+  async (req: Request<UserParams>, res: Response, next: NextFunction) => {
+    const errors = validator.validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(httpConstants.HTTP_STATUS_BAD_REQUEST)
+        .json({ message: "Invalid create user body", errors: errors.array() });
+    }
+
+    const { username, password } = validator.matchedData(req);
+
+    if (await userModel.getUserByUsername(username)) {
+      return res
+        .status(httpConstants.HTTP_STATUS_BAD_REQUEST)
+        .json({ message: "This username is not available" });
+    }
+
+    const SALT_ROUNDS = 10;
+    const hashedPassword = await hash(password, SALT_ROUNDS);
+
+    const newUser = await userModel.createUser({
+      spotifyId: null,
+      username: username,
+      displayName: username,
+      password: hashedPassword,
+    });
+
+    if (!newUser) {
+      return res
+        .status(httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+        .json({ message: "Failed to create a user" });
+    }
+
+    const secret: string = environmentVariables.JWT_SECRET;
+    jwt.sign(
+      { user: newUser },
+      secret,
+      { expiresIn: "1 days" },
+      (error, token) => {
+        if (error) {
+          console.error(error);
+          return res
+            .status(httpConstants.HTTP_STATUS_INTERNAL_SERVER_ERROR)
+            .json({ message: "Failed to get a token" });
+        } else {
+          const { password, ...userWithoutPassword } = newUser;
+          return res
+            .status(httpConstants.HTTP_STATUS_CREATED)
+            .json({ user: userWithoutPassword, token });
+        }
+      },
+    );
+  },
+];
+
+export { initialisePassportStrategy, handleSuccessfulAuth, createUser };

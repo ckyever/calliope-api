@@ -7,6 +7,7 @@ import * as authController from "../controllers/authController";
 
 const authRouter = Router();
 
+authRouter.post("/signup", ...authController.createUser);
 authRouter.get("/spotify", passport.authenticate("spotify"));
 authRouter.get(
   "/spotify/callback",
