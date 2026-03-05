@@ -19,11 +19,29 @@ const getUserBySpotifyId = async (spotifyId: string) => {
   return user;
 };
 
-const createUser = async (spotifyId: string, displayName: string) => {
+interface UserInfo {
+  spotifyId: string | null;
+  username: string | null;
+  displayName: string | null;
+  password: string | null;
+}
+
+const createUser = async ({
+  spotifyId = null,
+  username = null,
+  displayName = null,
+  password = null,
+}: UserInfo) => {
+  if (!spotifyId && !username) {
+    throw Error("User must have either a Spotify ID or Username");
+  }
+
   const user = await prisma.user.create({
     data: {
       spotifyId: spotifyId,
+      username: username,
       displayName: displayName,
+      password: password,
     },
   });
   return user;

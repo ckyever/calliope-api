@@ -24,7 +24,12 @@ const initialisePassportStrategy = () => {
           if (user) {
             user = await userModel.updateUser(profile.id, profile.displayName);
           } else {
-            user = await userModel.createUser(profile.id, profile.displayName);
+            user = await userModel.createUser({
+              spotifyId: profile.id,
+              username: null,
+              displayName: profile.displayName,
+              password: null,
+            });
           }
 
           return done(null, user);
