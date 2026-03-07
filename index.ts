@@ -11,6 +11,7 @@ import environmentVariables from "./environmentVariables";
 import { authenticateToken } from "./middleware/authenticateToken";
 
 import authRouter from "./routes/authRouter";
+import protectedUsersRouter from "./routes/protectedUsersRouter";
 import usersRouter from "./routes/usersRouter";
 
 import * as authenticationController from "./controllers/authController";
@@ -51,10 +52,11 @@ app.get("/", (request: Request, response: Response) =>
 
 // Unprotected Routes
 app.use("/api/auth", authRouter);
+app.use("/api/users", usersRouter);
 
 // Protected Routes
 app.use(authenticateToken);
-app.use("/api/users", usersRouter);
+app.use("/api/users", protectedUsersRouter);
 
 app.listen(environmentVariables.PORT, (error) => {
   if (error) {
