@@ -151,4 +151,8 @@ const createUser = [
   },
 ];
 
-export { initialisePassportStrategy, handleSuccessfulAuth, createUser };
+const login = async (req: Request, res: Response) => {
+  return res.json({ message: "CKYTODO Login" });
+};
+
+export { initialisePassportStrategy, handleSuccessfulAuth, createUser, login };
