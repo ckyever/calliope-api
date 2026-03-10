@@ -86,7 +86,7 @@ const handleSuccessfulAuth = async (req: Request, res: Response) => {
   );
 };
 
-const validateCreateUser = [
+const validateAuthCredentials = [
   validator
     .body("username")
     .trim()
@@ -96,7 +96,7 @@ const validateCreateUser = [
 ];
 
 const createUser = [
-  validateCreateUser,
+  validateAuthCredentials,
   async (req: Request<UserParams>, res: Response, next: NextFunction) => {
     const errors = validator.validationResult(req);
     if (!errors.isEmpty()) {
@@ -151,8 +151,20 @@ const createUser = [
   },
 ];
 
-const login = async (req: Request, res: Response) => {
-  return res.json({ message: "CKYTODO Login" });
-};
+const login = [
+  validateAuthCredentials,
+  async (req: Request, res: Response) => {
+    const errors = validator.validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(httpConstants.HTTP_STATUS_BAD_REQUEST)
+        .json({ message: "Invalid login body", errors: errors.array() });
+    }
+
+    const { username, password } = validator.matchedData(req);
+
+    return res.json({ message: "CKYTODO Login" });
+  },
+];
 
 export { initialisePassportStrategy, handleSuccessfulAuth, createUser, login };
